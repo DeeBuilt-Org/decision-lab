@@ -361,8 +361,18 @@ The pricing links on the result screen come from this list.
   Every "Talk to DeeBuilt" button uses it.
 - Four new questions on the task tools' strengths (workload, goals, approvals,
   mobile) proposed to even the balance. Not built; waiting on Ruthnie.
-- Design session next: Home card for the Platform Picker as the blueprint for
-  the app's look, platform logos, repo move and DeeBuilt branding.
+- Design session next: the rest of the app's look, repo move and DeeBuilt
+  branding.
+
+**2026-10-21, Home card shipped:** `components/PickerCard.tsx` and
+`picker-card.css`. A dark card with the seven platforms as app tiles in their
+own colors (tilted stack that deals into a row on hover), a real quiz question
+rotating every 3.6s, and a mini ranking that reshuffles with each question. The
+mini ranking is illustrative, not computed. Motion pauses off screen and is off
+for reduced-motion users. Logos live in `marks.ts`: Airtable, Asana, ClickUp
+from Simple Icons; SmartSuite from deebuilt-foundations; monday.com from
+Wikipedia's SVG; Smartsheet and Teamwork.com as PNGs in `logos/`
+(`teamwork-icon.png` is Ruthnie's `teamwork.png` cropped to the icon).
 
 **2026-10-21, sixth pass (other platforms' strengths):**
 - Added: Q1 "6 to 15" ASA 1, MON 1, CU 1, TW 1 (had no votes). Q8 Dashboards

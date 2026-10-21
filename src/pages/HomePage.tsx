@@ -11,6 +11,7 @@ import { TypeChooser } from "@/components/TypeChooser";
 import { TemplatePicker } from "@/components/TemplatePicker";
 import { typeInfo } from "@/types/registry";
 import { StatePill } from "@/types/advanced/verdict/VerdictPanel";
+import { PickerCard } from "@/quizzes/platform-picker/components/PickerCard";
 import type { Run, Scorecard, ScorecardType } from "@/db/types";
 import "./home.css";
 
@@ -115,27 +116,7 @@ export default function HomePage() {
       <section className="dl-home-section">
         <ul className="dl-home-cards">
           <li>
-            <div className="dl-home-card">
-              <button
-                type="button"
-                className="dl-home-card-body"
-                onClick={() => navigate("/platform-picker")}
-              >
-                <span className="dl-home-card-name">Platform Picker</span>
-                <span className="dl-home-card-meta">
-                  20 questions · recommends a work-management platform
-                </span>
-              </button>
-              <Button
-                type="primary"
-                ghost
-                icon={<PlayCircleOutlined />}
-                onClick={() => navigate("/platform-picker")}
-                aria-label="Start the Platform Picker"
-              >
-                Start
-              </Button>
-            </div>
+            <PickerCard />
           </li>
         </ul>
       </section>

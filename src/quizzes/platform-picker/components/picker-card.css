@@ -1,0 +1,271 @@
+/**
+ * Platform Picker card on Home. The one surface in the app that is dark in
+ * both themes: the color here comes from the seven platforms, and a dark
+ * ground is what lets their brand colors read at full strength.
+ */
+
+.pp-card {
+  /* Brand colors, used for the one-color tiles and the mini ranking bars.
+     Airtable, Asana and ClickUp are their Simple Icons hex values. monday.com
+     and SmartSuite take one color from their own multicolor marks (green dot,
+     orange bar), picked so no two bars look alike. Teamwork is the pink dot in
+     its icon. Smartsheet's navy would vanish on this ink, so its bar uses a
+     lighter blue from the same family. */
+  --pp-brand-AT: #18bfff;
+  --pp-brand-ASA: #f06a6a;
+  --pp-brand-CU: #7b68ee;
+  --pp-brand-MON: #00ca72;
+  --pp-brand-TW: #ff22b1;
+  --pp-brand-SS: #0073ec;
+  --pp-brand-SU: #ffb938;
+
+  --pp-ink: #12151c;
+  --pp-ink-line: rgba(255, 255, 255, 0.1);
+  --pp-ink-text: #f4f5f7;
+  --pp-ink-muted: rgba(244, 245, 247, 0.6);
+
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ops-space-lg);
+  padding: var(--ops-space-xl);
+  background: var(--pp-ink);
+  color: var(--pp-ink-text);
+  border-radius: var(--ops-radius-lg);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.pp-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(18, 21, 28, 0.28);
+}
+
+/* ---- App tiles --------------------------------------------------------- */
+
+/* A loose overlapping stack, like icons tossed on a desk. Hover deals them
+   out into a neat row. */
+.pp-card-tiles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.pp-tile {
+  --pp-tilt: 0deg;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  margin-left: -10px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 0 0 3px var(--pp-ink), 0 6px 14px rgba(0, 0, 0, 0.35);
+  transform: rotate(var(--pp-tilt));
+  transition: margin 320ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pp-tile:first-child {
+  margin-left: 0;
+}
+
+.pp-tile:nth-child(odd) {
+  --pp-tilt: -7deg;
+}
+
+.pp-tile:nth-child(even) {
+  --pp-tilt: 6deg;
+}
+
+.pp-card:hover .pp-tile {
+  margin-left: var(--ops-space-sm);
+  transform: rotate(0deg) translateY(-3px);
+}
+
+.pp-card:hover .pp-tile:first-child {
+  margin-left: 0;
+}
+
+/* Staggered, so the row deals out left to right. */
+.pp-tile:nth-child(2) { transition-delay: 20ms; }
+.pp-tile:nth-child(3) { transition-delay: 40ms; }
+.pp-tile:nth-child(4) { transition-delay: 60ms; }
+.pp-tile:nth-child(5) { transition-delay: 80ms; }
+.pp-tile:nth-child(6) { transition-delay: 100ms; }
+.pp-tile:nth-child(7) { transition-delay: 120ms; }
+
+.pp-tile svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.pp-tile-letter {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.pp-tile[data-code="AT"] { background: var(--pp-brand-AT); }
+.pp-tile[data-code="ASA"] { background: var(--pp-brand-ASA); }
+.pp-tile[data-code="CU"] { background: var(--pp-brand-CU); }
+.pp-tile[data-code="TW"] { background: var(--pp-brand-TW); }
+.pp-tile[data-code="SS"] { background: var(--pp-brand-SS); }
+
+/* Multicolor marks keep their own colors on white, like their app icons. */
+.pp-tile[data-full-color="true"] {
+  background: #fff;
+}
+
+.pp-tile[data-full-color="true"] svg {
+  width: 26px;
+}
+
+.pp-tile-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+/* An image that is already a whole app icon covers the tile edge to edge.
+   Its dark navy sits close to the card's ink, so a faint light ring keeps
+   its outline readable. */
+.pp-tile[data-fills="true"] {
+  overflow: hidden;
+  box-shadow: 0 0 0 3px var(--pp-ink), 0 0 0 4px rgba(255, 255, 255, 0.18),
+    0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.pp-tile[data-fills="true"] .pp-tile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Visible to screen readers only: the tile's accessible name. */
+.pp-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---- Question ------------------------------------------------------------ */
+
+.pp-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ops-space-sm);
+  /* Holds two lines so a short question doesn't make the card jump. */
+  min-height: 5.4em;
+}
+
+.pp-card-kicker {
+  margin: 0;
+  font-size: var(--ops-fs-fine);
+  font-weight: 600;
+  letter-spacing: var(--ops-tracking-wide);
+  text-transform: uppercase;
+  color: var(--pp-ink-muted);
+}
+
+.pp-card-question {
+  margin: 0;
+  font-size: var(--ops-fs-h2);
+  font-weight: 750;
+  letter-spacing: var(--ops-tracking-tight);
+  line-height: 1.2;
+  color: var(--pp-ink-text);
+  animation: pp-question-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes pp-question-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Mini ranking -------------------------------------------------------- */
+
+/* Each bar sits in its own 10px row and is moved to its rank with a
+   transform, so a new order slides into place. */
+.pp-card-bars {
+  position: relative;
+  height: 70px;
+}
+
+.pp-mini {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pp-mini-fill {
+  display: block;
+  height: 5px;
+  border-radius: 3px;
+  transition: width 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pp-mini[data-code="AT"] .pp-mini-fill { background: var(--pp-brand-AT); }
+.pp-mini[data-code="ASA"] .pp-mini-fill { background: var(--pp-brand-ASA); }
+.pp-mini[data-code="CU"] .pp-mini-fill { background: var(--pp-brand-CU); }
+.pp-mini[data-code="MON"] .pp-mini-fill { background: var(--pp-brand-MON); }
+.pp-mini[data-code="TW"] .pp-mini-fill { background: var(--pp-brand-TW); }
+.pp-mini[data-code="SS"] .pp-mini-fill { background: var(--pp-brand-SS); }
+.pp-mini[data-code="SU"] .pp-mini-fill { background: var(--pp-brand-SU); }
+
+/* ---- Foot ---------------------------------------------------------------- */
+
+.pp-card-foot {
+  margin-top: auto;
+  padding-top: var(--ops-space-md);
+  border-top: 1px solid var(--pp-ink-line);
+}
+
+/* On the dark card the primary button goes light, so it doesn't sink into
+   the ink the way the app's green would. */
+.pp-card-foot .ant-btn-primary {
+  background: var(--pp-ink-text);
+  color: var(--pp-ink);
+  box-shadow: none;
+}
+
+.pp-card-foot .ant-btn-primary:not(:disabled):hover {
+  background: #fff;
+  color: var(--pp-ink);
+}
+
+@media (max-width: 599px) {
+  .pp-card {
+    padding: var(--ops-card-pad);
+  }
+
+  .pp-tile {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .pp-tile svg {
+    width: 19px;
+    height: 19px;
+  }
+}
