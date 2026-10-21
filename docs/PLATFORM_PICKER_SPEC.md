@@ -251,7 +251,9 @@ and Airtable has its own add-on
 ## 7. The result screen
 
 - **The ranking:** all seven platforms in order, each with a bar for its fit,
-  "earned of possible points", any feature gaps, and a link to its pricing page.
+  its fit as "NN% match", any feature gaps, and a link to its pricing page.
+  (Was "earned of possible points" until 2026-10-21: a platform with 8 of 30
+  ranked below one with 6 of 17, which read as a miscount.)
 - **The top platform** opens up: one line on what it is, and up to three
   answers that gave it more points than #2 (plus #2's feature gaps). Listing
   its biggest answers instead would show lines #2 scored on just as well. When

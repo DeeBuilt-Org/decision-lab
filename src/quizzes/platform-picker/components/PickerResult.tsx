@@ -66,9 +66,9 @@ function RankRow({
       <div className="pp-rank-head">
         <span className="pp-rank-num">{rank}</span>
         <span className="pp-rank-name">{info.name}</span>
-        <span className="pp-rank-points">
-          {Math.max(0, score.earned)} of {score.possible} points
-        </span>
+        {/* The percentage, not raw points: the ranking sorts by it, and
+            "8 of 30" sitting below "6 of 17" reads as a miscount. */}
+        <span className="pp-rank-points">{percent}% match</span>
       </div>
       <div className="pp-bar" aria-hidden="true">
         <span className="pp-bar-fill" style={{ width: `${percent}%` }} />

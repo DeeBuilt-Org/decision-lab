@@ -43,6 +43,17 @@
   box-shadow: 0 14px 32px rgba(18, 21, 28, 0.28);
 }
 
+/* The quiz's name leads the card, so it holds up even when the card is shown
+   small, like a screenshot on the DeeBuilt site. */
+.pp-card-name {
+  margin: 0;
+  font-size: var(--ops-fs-h1);
+  font-weight: 800;
+  letter-spacing: var(--ops-tracking-tight);
+  line-height: 1.1;
+  color: var(--pp-ink-text);
+}
+
 /* ---- App tiles --------------------------------------------------------- */
 
 /* A loose overlapping stack, like icons tossed on a desk. Hover deals them

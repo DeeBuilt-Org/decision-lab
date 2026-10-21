@@ -76,6 +76,8 @@ export function PickerCard() {
       // instead of making it wait for the next tick.
       onMouseEnter={() => setStep((s) => (s + 1) % SHOWCASE.length)}
     >
+      <p className="pp-card-name">Platform Picker</p>
+
       <ul className="pp-card-tiles" aria-label="Platforms compared">
         {PLATFORMS.map((p) => {
           const mark = MARKS[p.code];
@@ -116,7 +118,7 @@ export function PickerCard() {
       </ul>
 
       <div className="pp-card-body">
-        <p className="pp-card-kicker">Platform Picker · 20 questions</p>
+        <p className="pp-card-kicker">20 questions</p>
         {/* Keyed on the step so each new question replays the entrance. */}
         <p key={step} className="pp-card-question">
           {SHOWCASE[step]}
