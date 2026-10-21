@@ -3,6 +3,7 @@ import {
   HomeOutlined,
   ReconciliationOutlined,
   HistoryOutlined,
+  CompassOutlined,
   LeftOutlined,
   RightOutlined,
 } from "@ant-design/icons";
@@ -21,6 +22,7 @@ const ITEMS: NavItem[] = [
   { to: "/", label: "Home", icon: <HomeOutlined />, end: true },
   { to: "/scorecards", label: "Scorecards", icon: <ReconciliationOutlined /> },
   { to: "/history", label: "Run history", icon: <HistoryOutlined /> },
+  { to: "/platform-picker", label: "Platform Picker", icon: <CompassOutlined /> },
 ];
 
 /**

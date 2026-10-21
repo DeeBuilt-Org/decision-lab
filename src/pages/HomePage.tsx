@@ -76,7 +76,6 @@ export default function HomePage() {
       ) : (
         <section className="dl-home-section">
           <div className="dl-section-head">
-            <h2 className="dl-h2">Run one now</h2>
             <Button type="link" onClick={() => navigate("/scorecards")}>
               All scorecards <ArrowRightOutlined />
             </Button>
@@ -112,6 +111,34 @@ export default function HomePage() {
           </ul>
         </section>
       )}
+
+      <section className="dl-home-section">
+        <ul className="dl-home-cards">
+          <li>
+            <div className="dl-home-card">
+              <button
+                type="button"
+                className="dl-home-card-body"
+                onClick={() => navigate("/platform-picker")}
+              >
+                <span className="dl-home-card-name">Platform Picker</span>
+                <span className="dl-home-card-meta">
+                  20 questions · recommends a work-management platform
+                </span>
+              </button>
+              <Button
+                type="primary"
+                ghost
+                icon={<PlayCircleOutlined />}
+                onClick={() => navigate("/platform-picker")}
+                aria-label="Start the Platform Picker"
+              >
+                Start
+              </Button>
+            </div>
+          </li>
+        </ul>
+      </section>
 
       {recent.length > 0 && (
         <section className="dl-home-section">

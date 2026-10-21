@@ -21,7 +21,6 @@
 
 .dl-fq:focus-within {
   border-color: var(--ops-header-accent);
-  box-shadow: inset 3px 0 0 var(--ops-header-accent);
 }
 
 /* A section is a divider, not a question — it reads as a heading in the list

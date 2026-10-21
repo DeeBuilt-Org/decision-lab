@@ -14,8 +14,7 @@
 /* A required question that blocked a finish attempt says so on the row, not
    only in a toast that vanishes before it can be acted on. */
 .dl-frow[data-missing="true"] {
-  border-color: var(--ops-fail-border);
-  box-shadow: inset 3px 0 0 var(--ops-fail-fg);
+  border-color: var(--ops-fail-fg);
 }
 
 .dl-frow-head {

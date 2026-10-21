@@ -25,8 +25,7 @@
 /* A row holding the dealbreaker takes the state itself, so the cause is
    findable without hunting once the top panel says "no". */
 .dl-qrow[data-dq="true"] {
-  border-color: var(--ops-dq-border);
-  box-shadow: inset 3px 0 0 var(--ops-dq-fg);
+  border-color: var(--ops-dq-fg);
 }
 
 .dl-qrow-head {

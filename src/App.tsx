@@ -7,6 +7,7 @@ import EditorRoute from "@/pages/EditorRoute";
 import RunRoute from "@/pages/RunRoute";
 import HistoryPage from "@/pages/HistoryPage";
 import NotFound from "@/pages/NotFound";
+import PlatformPickerPage from "@/quizzes/platform-picker/PlatformPickerPage";
 
 // Derived from Vite's base so the same build works at "/" in dev and
 // "/decision-lab/" in production, with no env var to forget.
@@ -26,6 +27,9 @@ export function App() {
             <Route path="/scorecards/:id" element={<EditorRoute />} />
             <Route path="/run/:id" element={<RunRoute />} />
             <Route path="/history" element={<HistoryPage />} />
+            {/* Ready-made quizzes are fixed screens with their own route, not
+                scorecard types: there is nothing to edit or save. */}
+            <Route path="/platform-picker" element={<PlatformPickerPage />} />
           </Route>
           <Route path="/index.html" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />

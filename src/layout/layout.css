@@ -68,13 +68,12 @@
   color: var(--ops-text);
 }
 
-/* react-router adds .active to the matching NavLink. The left bar is the
-   affordance — a filled pill would fight the editorial, low-chrome look. */
+/* react-router adds .active to the matching NavLink. Accent text and a sunken
+   fill mark it. */
 .dl-nav-item.active {
   color: var(--ops-header-accent);
   background: var(--ops-surface-sunken);
   font-weight: 600;
-  box-shadow: inset 2px 0 0 var(--ops-header-accent);
 }
 
 .dl-nav-icon {

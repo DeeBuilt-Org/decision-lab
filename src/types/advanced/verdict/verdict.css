@@ -46,13 +46,12 @@
   display: flex;
   flex-direction: column;
   gap: var(--ops-space-md);
-  /* A disqualified run gets a heavier left edge — the surface itself changes
-     state, it isn't just a badge swap. */
-  box-shadow: inset 3px 0 0 var(--dl-border);
 }
 
+/* A disqualified run's whole border takes the state color, so the surface
+   itself changes state, not just the badge. */
 .dl-verdict[data-state="disqualified"] {
-  box-shadow: inset 5px 0 0 var(--dl-fg);
+  border-color: var(--dl-fg);
 }
 
 .dl-verdict-top {
