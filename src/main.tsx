@@ -1,11 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { message } from "antd";
 import { App } from "./App";
-import { connectBridge } from "./components/opsette-bridge";
-import { hydrateScorecardsFromBridge } from "./db/scorecardsRepo";
-import { hydrateRunsFromBridge } from "./db/runsRepo";
-import { resetParentKnown, setBridgeInstance } from "./lib/bridgeInstance";
-import type { BridgedValue } from "./db/types";
 import "./styles/tokens.css";
 import "./index.css";
 
@@ -58,37 +52,4 @@ if (isPreviewHost || isInIframe) {
     });
 }
 
-// Bridge handshake gate. In standalone (window.parent === window) this resolves
-// to null in <1ms; inside an iframe it awaits the parent's `init` for up to 1s —
-// render is never blocked past that. When bridge mode boots, hydrate IDB from
-// init.items BEFORE rendering so the repos return the right data on first
-// render. Local-only rows are left untouched either way.
-connectBridge<BridgedValue>().then(async (bridge) => {
-  setBridgeInstance(bridge);
-  if (bridge) {
-    // Debounced toast: multiple timeouts in a 1s window collapse to a single
-    // message, so a bulk-save failure doesn't spam.
-    let lastToastAt = 0;
-    bridge.onTimeout(() => {
-      const nowMs = Date.now();
-      if (nowMs - lastToastAt < 1000) return;
-      lastToastAt = nowMs;
-      message.error("Couldn't save — try again");
-    });
-    try {
-      // Both hydrates read the same shared init.items array and split it by
-      // `kind`; resetParentKnown is called ONCE with the combined ids, since it
-      // clears the set before refilling and would otherwise have each hydrate
-      // clobber the other's ids.
-      const [scorecardIds, runIds] = await Promise.all([
-        hydrateScorecardsFromBridge(bridge.init.items),
-        hydrateRunsFromBridge(bridge.init.items),
-      ]);
-      resetParentKnown([...scorecardIds, ...runIds]);
-    } catch (err) {
-      console.error("[decision-lab] bridge hydrate failed:", err);
-    }
-  }
-
-  createRoot(document.getElementById("root")!).render(<App />);
-});
+createRoot(document.getElementById("root")!).render(<App />);

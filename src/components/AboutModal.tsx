@@ -1,4 +1,5 @@
 import { Modal, Typography } from "antd";
+import DeeBuiltCredit from "@/components/DeeBuiltCredit";
 
 const { Paragraph, Title } = Typography;
 
@@ -6,7 +7,7 @@ export default function AboutModal({ open, onClose }: { open: boolean; onClose: 
   return (
     <Modal open={open} onCancel={onClose} footer={null} title="About Decision Lab" width={560}>
       <Title level={5} style={{ marginTop: 0 }}>
-        Your judgment, made repeatable
+        A free tool from DeeBuilt
       </Title>
       <Paragraph>
         Build a scorecard once — what matters, how much each thing counts, and what ends the
@@ -22,9 +23,8 @@ export default function AboutModal({ open, onClose }: { open: boolean; onClose: 
         There's no AI in the scoring, on purpose. Same answers, same verdict, every time, and
         you can see the arithmetic.
       </Paragraph>
-      <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-        Part of Opsette Tools. Everything stays on your device.
-      </Paragraph>
+      <Paragraph type="secondary">Everything stays on your device.</Paragraph>
+      <DeeBuiltCredit />
     </Modal>
   );
 }

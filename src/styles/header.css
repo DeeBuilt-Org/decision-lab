@@ -1,0 +1,54 @@
+/**
+ * Decision Lab header.
+ *
+ * Surface, border and accent colors all come from tokens.css, whose dark-mode
+ * block (html.dark / html[data-theme="dark"]) flips them, so the header needs
+ * no dark overrides of its own.
+ */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: var(--ops-space-lg);
+  height: 60px;
+  padding: 0 var(--ops-page-pad);
+  background: var(--ops-surface);
+  border-bottom: 1px solid var(--ops-border);
+  box-sizing: border-box;
+}
+
+.app-header__title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ops-space-sm);
+  flex: 1 1 auto;
+  min-width: 0; /* allow the name to truncate on narrow phones */
+  color: var(--ops-header-accent);
+}
+
+.app-header__mark {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.app-header__name {
+  margin: 0;
+  font-size: clamp(18px, 5vw, 20px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-header__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ops-space-sm);
+  flex: 0 0 auto;
+}

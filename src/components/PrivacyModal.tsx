@@ -1,4 +1,5 @@
 import { Modal, Typography } from "antd";
+import DeeBuiltCredit from "@/components/DeeBuiltCredit";
 
 const { Paragraph, Title } = Typography;
 
@@ -17,10 +18,7 @@ export default function PrivacyModal({ open, onClose }: { open: boolean; onClose
         run history, and another device won't see them. Export anything you'd be unhappy to
         lose.
       </Paragraph>
-      <Paragraph style={{ marginBottom: 0 }}>
-        When Decision Lab is opened inside Opsette, your data saves to your Opsette workspace
-        instead, so it follows you across devices.
-      </Paragraph>
+      <DeeBuiltCredit />
     </Modal>
   );
 }

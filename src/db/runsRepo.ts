@@ -11,27 +11,8 @@
  */
 
 import { uuid } from "@/lib/uuid";
-import {
-  forgetParentKnown,
-  getBridgeInstance,
-  isBridgeMode,
-  isParentKnown,
-  markParentKnown,
-} from "@/lib/bridgeInstance";
 import { getDb } from "./db";
-import { RUNS_STORE, type BridgedValue, type Run, type RunAnswers, type Scorecard } from "./types";
-
-function persistToBridge(run: Run): void {
-  const bridge = getBridgeInstance();
-  if (!bridge) return;
-  const { id, ...rest } = run;
-  bridge
-    .save(id, { kind: "run", value: rest })
-    .then(() => markParentKnown(id))
-    .catch(() => {
-      /* onTimeout hook in main.tsx surfaces the toast */
-    });
-}
+import { RUNS_STORE, type Run, type RunAnswers, type Scorecard } from "./types";
 
 /** A fresh, empty answer set matching the scorecard's type. */
 function emptyAnswers(scorecard: Scorecard): RunAnswers {
@@ -81,7 +62,6 @@ export const runsRepo = {
       startedAt: Date.now(),
     };
     await db.put(RUNS_STORE, run);
-    persistToBridge(run);
     return run;
   },
 
@@ -92,7 +72,6 @@ export const runsRepo = {
     if (!existing) return undefined;
     const updated: Run = { ...existing, answers };
     await db.put(RUNS_STORE, updated);
-    persistToBridge(updated);
     return updated;
   },
 
@@ -105,7 +84,6 @@ export const runsRepo = {
     if (!existing) return undefined;
     const updated: Run = { ...existing, ...patch };
     await db.put(RUNS_STORE, updated);
-    persistToBridge(updated);
     return updated;
   },
 
@@ -120,20 +98,12 @@ export const runsRepo = {
     if (!existing) return undefined;
     const { completedAt: _dropped, ...rest } = existing;
     await db.put(RUNS_STORE, rest as Run);
-    persistToBridge(rest as Run);
     return rest as Run;
   },
 
   async remove(id: string): Promise<void> {
     const db = await getDb();
     await db.delete(RUNS_STORE, id);
-    if (isBridgeMode() && isParentKnown(id)) {
-      const bridge = getBridgeInstance();
-      forgetParentKnown(id);
-      bridge?.delete(id).catch(() => {
-        /* optimistic UI already advanced; onTimeout surfaces the toast */
-      });
-    }
   },
 
   /** Deleting a scorecard orphans its runs; callers decide whether to cascade. */
@@ -142,23 +112,3 @@ export const runsRepo = {
     for (const run of runs) await runsRepo.remove(run.id);
   },
 };
-
-/** See hydrateScorecardsFromBridge — same contract, runs half of init.items. */
-export async function hydrateRunsFromBridge(
-  items: Array<{ data_id: string; value: BridgedValue }>,
-): Promise<string[]> {
-  const rows = items.filter(
-    (item): item is { data_id: string; value: Extract<BridgedValue, { kind: "run" }> } =>
-      !!item.value && typeof item.value === "object" && item.value.kind === "run",
-  );
-  if (rows.length === 0) return [];
-  const db = await getDb();
-  const tx = db.transaction(RUNS_STORE, "readwrite");
-  const ids: string[] = [];
-  for (const { data_id, value } of rows) {
-    await tx.store.put({ ...value.value, id: data_id } satisfies Run);
-    ids.push(data_id);
-  }
-  await tx.done;
-  return ids;
-}

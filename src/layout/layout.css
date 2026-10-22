@@ -134,12 +134,7 @@
 /* ---- Header button ------------------------------------------------------- */
 
 .dl-header-btn {
-  color: #fff;
-}
-
-.dl-header-btn:hover {
-  color: #fff !important;
-  background: rgba(255, 255, 255, 0.12) !important;
+  color: var(--ops-header-accent);
 }
 
 /* ---- Footer -------------------------------------------------------------- */

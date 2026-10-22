@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Layout, Grid, Drawer, Button, Tooltip, Typography } from "antd";
 import { MenuOutlined, SunOutlined, MoonOutlined } from "@ant-design/icons";
 import { Outlet } from "react-router-dom";
-import { OpsetteHeader } from "@/components/opsette-header";
-import { OpsetteFooterLogo } from "@/components/opsette-share";
+import AppHeader from "@/components/AppHeader";
+import DeeBuiltCredit from "@/components/DeeBuiltCredit";
 import { useThemeMode } from "@/lib/theme";
 import { haptic } from "@/lib/haptics";
 import AboutModal from "@/components/AboutModal";
@@ -25,8 +25,7 @@ const SIDEBAR_COLLAPSED_KEY = "decision-lab-sidebar-collapsed";
  * The header stays chrome only — no workspace controls live in it. Anything
  * that acts on the current page belongs on the page, above the content. The
  * mobile nav trigger therefore sits in the page's own top strip, not in the
- * header (OpsetteHeader has no left slot, and adding one would fork the
- * shared component).
+ * header, which keeps a single right-hand actions slot.
  */
 export default function AppLayout() {
   const { mode, toggle } = useThemeMode();
@@ -55,9 +54,8 @@ export default function AppLayout() {
 
   return (
     <Layout className="dl-layout">
-      <OpsetteHeader
-        theme={isDark ? "dark" : "light"}
-        rightExtra={
+      <AppHeader
+        actions={
           <Tooltip title={isDark ? "Light mode" : "Dark mode"}>
             <Button
               type="text"
@@ -114,7 +112,7 @@ export default function AppLayout() {
 
           <Footer className="dl-footer">
             <div className="dl-footer-inner">
-              <OpsetteFooterLogo />
+              <DeeBuiltCredit />
               <div className="dl-footer-links">
                 <Link onClick={() => setAboutOpen(true)}>About</Link>
                 <Text type="secondary">·</Text>

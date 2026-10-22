@@ -7,43 +7,18 @@
  *
  * Storage is IndexedDB rather than localStorage. Runs each embed a full
  * scorecard snapshot, so the data grows in exactly the shape that silently
- * blows the localStorage quota (this has bitten the family before). The bridge
- * protocol and payload contract are unchanged; only the local substrate
- * differs, and the parent never sees the difference.
+ * blows the localStorage quota (this has bitten the family before).
  */
 
 import { uuid } from "@/lib/uuid";
-import {
-  forgetParentKnown,
-  getBridgeInstance,
-  isBridgeMode,
-  isParentKnown,
-  markParentKnown,
-} from "@/lib/bridgeInstance";
 import { typeInfo } from "@/types/registry";
 import { getDb } from "./db";
 import {
   SCORECARDS_STORE,
-  type BridgedValue,
   type Scorecard,
   type ScorecardContent,
   type ScorecardType,
 } from "./types";
-
-// Fire-and-forget bridge.save for one row. Local IDB is already the source of
-// truth for the caller by the time this runs, so a bridge failure (timeout,
-// parent error) never blocks the UI — onTimeout in main.tsx surfaces a toast.
-function persistToBridge(scorecard: Scorecard): void {
-  const bridge = getBridgeInstance();
-  if (!bridge) return;
-  const { id, ...rest } = scorecard;
-  bridge
-    .save(id, { kind: "scorecard", value: rest })
-    .then(() => markParentKnown(id))
-    .catch(() => {
-      /* onTimeout hook in main.tsx surfaces the toast */
-    });
-}
 
 /**
  * Normalize on read. Currently: advanced thresholds always come back
@@ -109,7 +84,6 @@ export const scorecardsRepo = {
       updatedAt: now,
     };
     await db.put(SCORECARDS_STORE, scorecard);
-    persistToBridge(scorecard);
     return normalize(scorecard);
   },
 
@@ -132,7 +106,6 @@ export const scorecardsRepo = {
       updatedAt: Date.now(),
     };
     await db.put(SCORECARDS_STORE, updated);
-    persistToBridge(updated);
     return normalize(updated);
   },
 
@@ -150,20 +123,12 @@ export const scorecardsRepo = {
       updatedAt: now,
     };
     await db.put(SCORECARDS_STORE, copy);
-    persistToBridge(copy);
     return normalize(copy);
   },
 
   async remove(id: string): Promise<void> {
     const db = await getDb();
     await db.delete(SCORECARDS_STORE, id);
-    if (isBridgeMode() && isParentKnown(id)) {
-      const bridge = getBridgeInstance();
-      forgetParentKnown(id);
-      bridge?.delete(id).catch(() => {
-        /* optimistic UI already advanced; onTimeout surfaces the toast */
-      });
-    }
   },
 };
 
@@ -204,33 +169,4 @@ function reidentify(content: ScorecardContent): ScorecardContent {
         },
       };
   }
-}
-
-/**
- * Called once from main.tsx right after connectBridge resolves with a live
- * Bridge, before the app renders. Writes only the rows the parent sent; never
- * clears or touches anything already in IDB that the parent didn't mention, so
- * a local-only scorecard survives bridge mode untouched.
- *
- * Returns the ids this hydrate consumed so main.tsx can combine them with the
- * runs' ids and call resetParentKnown ONCE with the full set — calling it from
- * both hydrates independently would have each clobber the other's ids.
- */
-export async function hydrateScorecardsFromBridge(
-  items: Array<{ data_id: string; value: BridgedValue }>,
-): Promise<string[]> {
-  const rows = items.filter(
-    (item): item is { data_id: string; value: Extract<BridgedValue, { kind: "scorecard" }> } =>
-      !!item.value && typeof item.value === "object" && item.value.kind === "scorecard",
-  );
-  if (rows.length === 0) return [];
-  const db = await getDb();
-  const tx = db.transaction(SCORECARDS_STORE, "readwrite");
-  const ids: string[] = [];
-  for (const { data_id, value } of rows) {
-    await tx.store.put({ ...value.value, id: data_id } satisfies Scorecard);
-    ids.push(data_id);
-  }
-  await tx.done;
-  return ids;
 }

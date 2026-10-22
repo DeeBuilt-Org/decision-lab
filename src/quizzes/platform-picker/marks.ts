@@ -19,7 +19,7 @@ import teamworkIcon from "./logos/teamwork-icon.png";
  * SmartSuite is the mark from deebuilt-foundations/public/smartsuite-logo.svg.
  * monday.com is the mark from Wikipedia's "Monday logo.svg". Smartsheet and
  * Teamwork.com are PNGs Ruthnie downloaded into ./logos (teamwork-icon.png is
- * teamwork.png cropped to the icon). Every mark stays its owner's trademark.
+ * cropped to just the icon). Every mark stays its owner's trademark.
  */
 export interface MarkShape {
   /** SVG path data; or `ellipse` for a dot. */

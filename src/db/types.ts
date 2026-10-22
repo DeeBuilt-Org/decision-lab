@@ -12,9 +12,6 @@
  * when). They have different lifecycles — a scorecard is edited for years, a
  * run is written once and then frozen — so they get separate stores.
  *
- * Both use a UUID `id` that doubles as the Opsette bridge `data_id`, so a row
- * can round-trip through the parent with no id remapping.
- *
  * See docs/DECISION_LAB_PLAN.md §3 and §7, and docs/SCORECARD_TYPES.md for the
  * type registry and what is planned for each.
  */
@@ -124,17 +121,3 @@ export const DB_NAME = "decision-lab";
 export const DB_VERSION = 2;
 export const SCORECARDS_STORE = "scorecards";
 export const RUNS_STORE = "runs";
-
-/* ---- Bridge payloads ------------------------------------------------------- */
-
-/**
- * What one row sends over the Opsette bridge. The parent stores an opaque JSONB
- * blob and never introspects it, so both shapes ride along with no parent-side
- * schema work.
- *
- * `kind` positively tags BOTH shapes — Decision Lab has no legacy rows, so it
- * can afford a clean discriminated union from day one.
- */
-export type BridgedScorecardValue = { kind: "scorecard"; value: Omit<Scorecard, "id"> };
-export type BridgedRunValue = { kind: "run"; value: Omit<Run, "id"> };
-export type BridgedValue = BridgedScorecardValue | BridgedRunValue;
