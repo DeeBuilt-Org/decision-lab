@@ -5,7 +5,7 @@
   background: var(--ops-surface-sunken);
 }
 
-/* The header is sticky at 60px (see header.css); the body fills what's left. */
+/* The header is sticky at --ops-header-h (see header.css); the body fills what's left. */
 .dl-body {
   background: var(--ops-surface-sunken);
 }
@@ -21,16 +21,24 @@
   display: flex;
   flex-direction: column;
   gap: var(--ops-space-sm);
-  /* Sticks under the 60px header and owns the full remaining height, so the
+  /* Sticks under the header and owns the full remaining height, so the
      rail never ends mid-page with a gap below it. */
   position: sticky;
-  top: 60px;
-  height: calc(100vh - 60px);
+  top: var(--ops-header-h);
+  height: calc(100vh - var(--ops-header-h));
   transition: width 160ms ease;
 }
 
 .dl-nav[data-collapsed="true"] {
   width: var(--ops-sidebar-w-collapsed);
+}
+
+/* In the mobile Drawer the rail fills the panel instead of sticking. */
+.ant-drawer .dl-nav {
+  position: static;
+  width: 100%;
+  height: 100%;
+  border-right: 0;
 }
 
 .dl-nav-list {
@@ -43,43 +51,47 @@
   flex: 1 1 auto;
 }
 
-.dl-nav-item,
-.dl-nav-collapse {
+/* One weight in every state, so nothing shifts when an item becomes active. */
+.dl-nav-item {
   display: flex;
   align-items: center;
-  gap: var(--ops-space-md);
+  gap: var(--ops-nav-gap);
   width: 100%;
-  padding: 10px var(--ops-space-md);
+  height: var(--ops-nav-item-h);
+  padding: 0 var(--ops-space-md);
   border: 0;
   background: transparent;
   border-radius: var(--ops-radius);
   color: var(--ops-text-muted);
-  font-size: var(--ops-fs-body);
-  font-weight: 500;
+  font-family: inherit;
+  font-size: var(--ops-fs-nav);
+  font-weight: var(--ops-fw-regular);
   text-align: left;
   cursor: pointer;
   text-decoration: none;
   transition: background 120ms ease, color 120ms ease;
 }
 
-.dl-nav-item:hover,
-.dl-nav-collapse:hover {
+.dl-nav-item:hover {
   background: var(--ops-surface-sunken);
   color: var(--ops-text);
 }
 
-/* react-router adds .active to the matching NavLink. Accent text and a sunken
-   fill mark it. */
+/* react-router adds .active to the matching NavLink. A sunken fill and full
+   ink text mark it; the icon takes the accent. */
 .dl-nav-item.active {
-  color: var(--ops-header-accent);
+  color: var(--ops-text);
   background: var(--ops-surface-sunken);
-  font-weight: 600;
+}
+
+.dl-nav-item.active .dl-nav-icon {
+  color: var(--ops-header-accent);
 }
 
 .dl-nav-icon {
   flex: 0 0 auto;
   display: inline-flex;
-  font-size: 18px;
+  font-size: var(--ops-icon-nav);
   line-height: 1;
 }
 
@@ -96,20 +108,52 @@
   opacity: 0;
 }
 
-.dl-nav[data-collapsed="true"] .dl-nav-item,
-.dl-nav[data-collapsed="true"] .dl-nav-collapse {
+.dl-nav[data-collapsed="true"] .dl-nav-item {
   justify-content: center;
   gap: 0;
   padding-inline: 0;
 }
 
-.dl-nav-collapse {
+/* ---- Rail foot: credit and links ----------------------------------------- */
+
+.dl-nav-foot {
   flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--ops-space-md) var(--ops-space-md) var(--ops-space-xs);
   border-top: 1px solid var(--ops-border);
-  border-radius: 0;
-  padding-top: var(--ops-space-md);
-  margin-top: auto;
-  font-size: var(--ops-fs-caption);
+}
+
+.dl-nav[data-collapsed="true"] .dl-nav-foot {
+  padding-inline: 0;
+}
+
+.dl-nav-foot-links {
+  display: flex;
+  align-items: center;
+  gap: var(--ops-space-sm);
+  font-size: var(--ops-fs-fine);
+  color: var(--ops-text-muted);
+}
+
+.dl-nav-foot-link {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: var(--ops-text-muted);
+  cursor: pointer;
+}
+
+.dl-nav-foot-link:hover {
+  color: var(--ops-text);
+  text-decoration: underline;
+}
+
+/* DeeBuiltCredit's text and link, wherever it renders. */
+.dl-credit {
+  font-size: var(--ops-fs-fine);
 }
 
 /* ---- Main column --------------------------------------------------------- */
@@ -126,28 +170,20 @@
   padding: var(--ops-space-xl) var(--ops-page-pad) var(--ops-space-2xl);
 }
 
-.dl-nav-trigger {
-  margin-bottom: var(--ops-space-sm);
-  margin-left: calc(var(--ops-space-sm) * -1);
-}
+/* ---- Footer (phones only; desktop carries it in the rail foot) ----------- */
 
-/* ---- Header button ------------------------------------------------------- */
-
-.dl-header-btn {
-  color: var(--ops-header-accent);
-}
-
-/* ---- Footer -------------------------------------------------------------- */
-
+/* Same box as .dl-content (padding inside the max-width), so the credit's
+   left edge lines up with the page above it. */
 .dl-footer {
   background: transparent;
-  padding: var(--ops-space-xl) var(--ops-page-pad) var(--ops-space-xl);
+  padding: 0;
   border-top: 1px solid var(--ops-border);
 }
 
 .dl-footer-inner {
   max-width: var(--ops-page-max);
   margin: 0 auto;
+  padding: var(--ops-space-xl) var(--ops-page-pad);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -156,8 +192,7 @@
 }
 
 .dl-footer-links {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--ops-space-sm);
-  font-size: var(--ops-fs-caption);
 }

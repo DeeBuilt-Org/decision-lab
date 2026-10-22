@@ -1,33 +1,53 @@
 import type { ReactNode } from "react";
+import { Button, Tooltip } from "antd";
+import { SidebarSimpleIcon } from "@phosphor-icons/react";
 import "@/styles/header.css";
 
-/** The scales mark from favicon.svg, drawn in currentColor so it follows the header accent. */
-function ScalesMark() {
-  return (
-    <svg className="app-header__mark" viewBox="0 0 256 256" aria-hidden="true">
-      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16">
-        <line x1="128" y1="40" x2="128" y2="216" />
-        <line x1="104" y1="216" x2="152" y2="216" />
-        <line x1="56" y1="88" x2="200" y2="56" />
-        <path d="M24,168c0,17.67,20,24,32,24s32-6.33,32-24L56,88Z" />
-        <path d="M168,136c0,17.67,20,24,32,24s32-6.33,32-24L200,56Z" />
-      </g>
-    </svg>
-  );
-}
-
 /**
- * AppHeader — Decision Lab's own sticky header: scales mark + tool name on the
- * left, page controls (theme toggle, etc.) on the right. Colors come from the
- * surface and accent tokens in tokens.css, which flip with the data-theme
- * attribute ThemeProvider sets on <html>.
+ * AppHeader: the sticky header lockup. Left to right: the nav toggle, the
+ * mark in a colored tile, the tool name in the display face; page-level
+ * controls (theme toggle, etc.) on the right.
+ *
+ * Built to be copied into the other DeeBuilt tools: an app swaps `mark`,
+ * `name` and the tile color (--ops-header-tile-bg) and keeps everything else.
+ * See docs/DECISION_LAB_UPGRADE.md, "Carrying it to the other tools".
  */
-export default function AppHeader({ actions }: { actions?: ReactNode }) {
+export default function AppHeader({
+  mark,
+  name,
+  actions,
+  onToggleNav,
+  navLabel,
+}: {
+  /** An icon drawn in currentColor; it renders white on the tile. */
+  mark: ReactNode;
+  name: string;
+  actions?: ReactNode;
+  /** Opens or collapses the app's nav. Omit in an app with no nav. */
+  onToggleNav?: () => void;
+  /** The toggle's accessible name, which changes with the nav's state. */
+  navLabel?: string;
+}) {
   return (
     <header className="app-header">
-      <div className="app-header__title">
-        <ScalesMark />
-        <h1 className="app-header__name">Decision Lab</h1>
+      <div className="app-header__lead">
+        {onToggleNav && (
+          <Tooltip title={navLabel} placement="bottomLeft">
+            <Button
+              type="text"
+              aria-label={navLabel}
+              icon={<SidebarSimpleIcon />}
+              onClick={onToggleNav}
+              className="app-header__btn"
+            />
+          </Tooltip>
+        )}
+        <div className="app-header__lockup">
+          <span className="app-header__tile" aria-hidden="true">
+            {mark}
+          </span>
+          <h1 className="app-header__name">{name}</h1>
+        </div>
       </div>
       <div className="app-header__actions">{actions}</div>
     </header>

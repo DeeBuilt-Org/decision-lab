@@ -1,14 +1,12 @@
-import { Tooltip } from "antd";
+import { Dropdown, Tooltip } from "antd";
 import {
-  HomeOutlined,
-  ReconciliationOutlined,
-  HistoryOutlined,
-  CompassOutlined,
-  LeftOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
+  HouseIcon,
+  CompassIcon,
+  InfoIcon,
+} from "@phosphor-icons/react";
 import { NavLink } from "react-router-dom";
 import type { ReactNode } from "react";
+import DeeBuiltCredit from "@/components/DeeBuiltCredit";
 
 interface NavItem {
   to: string;
@@ -18,28 +16,32 @@ interface NavItem {
   end?: boolean;
 }
 
+// Icons render at 1em; .dl-nav-icon sizes them from --ops-icon-nav.
 const ITEMS: NavItem[] = [
-  { to: "/", label: "Home", icon: <HomeOutlined />, end: true },
-  { to: "/scorecards", label: "Scorecards", icon: <ReconciliationOutlined /> },
-  { to: "/history", label: "Run history", icon: <HistoryOutlined /> },
-  { to: "/platform-picker", label: "Platform Picker", icon: <CompassOutlined /> },
+  { to: "/", label: "Home", icon: <HouseIcon />, end: true },
+  { to: "/platform-picker", label: "Platform Picker", icon: <CompassIcon /> },
 ];
 
 /**
- * The left rail. Collapsible on desktop (icon-only at 72px), and rendered
- * uncollapsed inside a Drawer on mobile — which is why `onToggleCollapsed` is
- * optional: in the Drawer there is nothing to collapse into.
+ * The left rail. Collapsible on desktop (icon-only), and rendered uncollapsed
+ * inside a Drawer on mobile. The collapse toggle lives in the header.
+ *
+ * The rail's foot carries the DeeBuilt credit and the About / Privacy links,
+ * so on desktop the page has one bottom edge instead of a footer that can't
+ * line up with the rail. Collapsed, the foot shrinks to an info menu.
  *
  * Widths and colors come from tokens.css; nothing here is a magic number.
  */
 export function SideNav({
   collapsed,
-  onToggleCollapsed,
   onNavigate,
+  onAbout,
+  onPrivacy,
 }: {
   collapsed: boolean;
-  onToggleCollapsed?: () => void;
   onNavigate?: () => void;
+  onAbout: () => void;
+  onPrivacy: () => void;
 }) {
   return (
     <nav className="dl-nav" data-collapsed={collapsed} aria-label="Sections">
@@ -65,19 +67,48 @@ export function SideNav({
         ))}
       </ul>
 
-      {onToggleCollapsed && (
-        <button
-          type="button"
-          className="dl-nav-collapse"
-          onClick={onToggleCollapsed}
-          aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
-        >
-          <span className="dl-nav-icon" aria-hidden="true">
-            {collapsed ? <RightOutlined /> : <LeftOutlined />}
-          </span>
-          <span className="dl-nav-label">Collapse</span>
-        </button>
-      )}
+      <div className="dl-nav-foot">
+        {collapsed ? (
+          <Dropdown
+            trigger={["click"]}
+            placement="topLeft"
+            menu={{
+              items: [
+                { key: "about", label: "About", onClick: onAbout },
+                { key: "privacy", label: "Privacy", onClick: onPrivacy },
+                { type: "divider" },
+                {
+                  key: "credit",
+                  label: (
+                    <a href="https://deebuilt.co" target="_blank" rel="noopener noreferrer">
+                      Made by DeeBuilt
+                    </a>
+                  ),
+                },
+              ],
+            }}
+          >
+            <button type="button" className="dl-nav-item" aria-label="About Decision Lab">
+              <span className="dl-nav-icon" aria-hidden="true">
+                <InfoIcon />
+              </span>
+            </button>
+          </Dropdown>
+        ) : (
+          <>
+            <DeeBuiltCredit />
+            <div className="dl-nav-foot-links">
+              <button type="button" className="dl-nav-foot-link" onClick={onAbout}>
+                About
+              </button>
+              <span aria-hidden="true">·</span>
+              <button type="button" className="dl-nav-foot-link" onClick={onPrivacy}>
+                Privacy
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </nav>
   );
 }

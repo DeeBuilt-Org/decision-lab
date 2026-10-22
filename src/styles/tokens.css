@@ -45,6 +45,28 @@
   --ops-fs-h1: clamp(26px, 6.4vw, 32px);      /* page title */
   --ops-fs-verdict: clamp(34px, 10vw, 44px);  /* the live score percentage */
 
+  /* Nav labels: smaller than body copy so the rail reads as navigation. */
+  --ops-fs-nav: 14px;
+  /* The header wordmark, set in the display face. */
+  --ops-fs-wordmark: clamp(22px, 5.6vw, 26px);
+
+  /* ---- Type families ----------------------------------------------------- */
+  /* Bodoni Moda carries names and titles; Lato carries everything you read or
+     click. Lato ships 400 and 700 only, so the UI runs on those two weights.
+     theme.tsx hands --ops-font-ui to AntD so its controls match. */
+  --ops-font-display: "Bodoni Moda", "Didot", Georgia, serif;
+  --ops-font-ui: Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* ---- Font weights ------------------------------------------------------ */
+  /* Lato ships 400 and 700 only, so the UI has exactly two weights. Bodoni
+     Moda is variable; every display title uses the one display weight. No
+     rule anywhere should name a raw weight. */
+  --ops-fw-regular: 400;
+  --ops-fw-bold: 700;
+  --ops-fw-display: 600;
+  /* Display titles share one tracking with the display family and weight. */
+  --ops-tracking-display: -0.01em;
+
   /* ---- Display type ------------------------------------------------------ */
   /* Editorial weight for page titles and the verdict number. Type carries the
      design here — see the family visual standard. */
@@ -56,36 +78,16 @@
   --ops-green-light: #426f62;
   --ops-gold: #cfae60;
 
-  /* ---- Verdict states ---------------------------------------------------- */
-  /* Decision Lab's one distinctive visual need: a run is always in exactly one
-     of four states, and that state must be legible at a glance from across a
-     desk while on a call. Each state gets a fill, a border, and a text color
-     so a surface can take on the state wholesale, not just tint a badge.
-     Deliberately NOT AntD's default success/warning/error — those read as
-     form-validation feedback, and this is a verdict. */
+  /* ---- Good / bad states ------------------------------------------------- */
+  /* A fill, a border and a text color each, so a surface can take on the
+     state wholesale. Quiz results use them for "meets" and "misses". */
   --ops-pass-fg: #1f6b4f;
   --ops-pass-bg: rgba(31, 107, 79, 0.08);
   --ops-pass-border: rgba(31, 107, 79, 0.28);
 
-  --ops-warn-fg: #9a6b16;
-  --ops-warn-bg: rgba(207, 174, 96, 0.14);
-  --ops-warn-border: rgba(154, 107, 22, 0.3);
-
   --ops-fail-fg: #9a3324;
   --ops-fail-bg: rgba(154, 51, 36, 0.07);
   --ops-fail-border: rgba(154, 51, 36, 0.26);
-
-  /* Disqualified is its own state, not a darker "fail" — it means the run is
-     over, and the surface says so loudly. */
-  --ops-dq-fg: #7a1f1f;
-  --ops-dq-bg: rgba(122, 31, 31, 0.1);
-  --ops-dq-border: rgba(122, 31, 31, 0.42);
-
-  /* A blocker is not a failure — it's a condition of delivery. Distinct from
-     warn so an accumulating blocker list never reads as "something is wrong". */
-  --ops-block-fg: #7c5514;
-  --ops-block-bg: rgba(207, 174, 96, 0.1);
-  --ops-block-border: rgba(124, 85, 20, 0.24);
 
   /* ---- Radius ------------------------------------------------------------ */
   --ops-radius-sm: 6px;
@@ -103,11 +105,25 @@
   --ops-surface-sunken: #f6f7f6;
   --ops-border: #e6e8e6;
   --ops-text: #1a1a1a;
-  --ops-text-muted: #6b6f6b;
+  --ops-text-muted: #5b605c;
 
-  /* ---- Sidebar ----------------------------------------------------------- */
-  --ops-sidebar-w: 248px;
-  --ops-sidebar-w-collapsed: 72px;
+  /* ---- Chrome ------------------------------------------------------------ */
+  /* Header height. The sticky sidebar offsets read this too. */
+  --ops-header-h: 56px;
+  /* The lockup's colored tile, its corner, and the mark inside it. */
+  --ops-header-tile-size: 28px;
+  --ops-header-tile-radius: 7px;
+  --ops-header-mark: 18px;
+  /* Square icon-only buttons in the chrome (nav toggle, theme toggle). */
+  --ops-control-icon: 36px;
+  /* Glyph sizes. Phosphor icons are 1em, so these set them via font-size. */
+  --ops-icon-chrome: 20px;
+  --ops-icon-nav: 18px;
+  /* Nav rows: height and the gap between icon and label. */
+  --ops-nav-item-h: 36px;
+  --ops-nav-gap: 10px;
+  --ops-sidebar-w: 240px;
+  --ops-sidebar-w-collapsed: 64px;
 
   /* ---- Header accent (family dark-mode pattern) -------------------------- */
   --ops-header-accent: var(--ops-green);
@@ -128,28 +144,15 @@ html[data-theme="dark"] {
 
   --ops-header-accent: #E4C49A;
 
-  /* Verdict states, re-tuned for a dark surface: the foreground lifts to stay
-     readable and the fills get more opaque so they still register as a state
-     change rather than a barely-visible tint. */
+  /* States re-tuned for a dark surface: the foreground lifts to stay readable
+     and the fills get more opaque so they still register. */
   --ops-pass-fg: #6ed3a5;
   --ops-pass-bg: rgba(110, 211, 165, 0.12);
   --ops-pass-border: rgba(110, 211, 165, 0.32);
 
-  --ops-warn-fg: #e6c879;
-  --ops-warn-bg: rgba(230, 200, 121, 0.12);
-  --ops-warn-border: rgba(230, 200, 121, 0.3);
-
   --ops-fail-fg: #f0928a;
   --ops-fail-bg: rgba(240, 146, 138, 0.1);
   --ops-fail-border: rgba(240, 146, 138, 0.3);
-
-  --ops-dq-fg: #ff9e94;
-  --ops-dq-bg: rgba(255, 158, 148, 0.13);
-  --ops-dq-border: rgba(255, 158, 148, 0.5);
-
-  --ops-block-fg: #e0c68f;
-  --ops-block-bg: rgba(224, 198, 143, 0.09);
-  --ops-block-border: rgba(224, 198, 143, 0.26);
 }
 
 /**

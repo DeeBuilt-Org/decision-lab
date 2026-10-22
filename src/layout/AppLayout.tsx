@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Layout, Grid, Drawer, Button, Tooltip, Typography } from "antd";
-import { MenuOutlined, SunOutlined, MoonOutlined } from "@ant-design/icons";
+import { MoonIcon, ScalesIcon, SunIcon } from "@phosphor-icons/react";
 import { Outlet } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import DeeBuiltCredit from "@/components/DeeBuiltCredit";
@@ -22,10 +22,9 @@ const SIDEBAR_COLLAPSED_KEY = "decision-lab-sidebar-collapsed";
  * in on mobile), and the routed page via <Outlet/>. Every route except NotFound
  * renders inside this.
  *
- * The header stays chrome only — no workspace controls live in it. Anything
- * that acts on the current page belongs on the page, above the content. The
- * mobile nav trigger therefore sits in the page's own top strip, not in the
- * header, which keeps a single right-hand actions slot.
+ * The header's nav toggle collapses the rail on desktop and opens the Drawer
+ * on mobile. On desktop the rail's foot holds the credit and the About /
+ * Privacy links; only phones get a footer under the page.
  */
 export default function AppLayout() {
   const { mode, toggle } = useThemeMode();
@@ -52,20 +51,37 @@ export default function AppLayout() {
     }
   }, [collapsed]);
 
+  const openAbout = () => {
+    setDrawerOpen(false);
+    setAboutOpen(true);
+  };
+  const openPrivacy = () => {
+    setDrawerOpen(false);
+    setPrivacyOpen(true);
+  };
+
   return (
     <Layout className="dl-layout">
       <AppHeader
+        mark={<ScalesIcon weight="bold" />}
+        name="Decision Lab"
+        navLabel={isMobile ? "Open navigation" : collapsed ? "Expand navigation" : "Collapse navigation"}
+        onToggleNav={() => {
+          haptic("tap");
+          if (isMobile) setDrawerOpen(true);
+          else setCollapsed((c) => !c);
+        }}
         actions={
           <Tooltip title={isDark ? "Light mode" : "Dark mode"}>
             <Button
               type="text"
               aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-              icon={isDark ? <SunOutlined /> : <MoonOutlined />}
+              icon={isDark ? <SunIcon /> : <MoonIcon />}
               onClick={() => {
                 haptic("tap");
                 toggle();
               }}
-              className="dl-header-btn"
+              className="app-header__btn"
             />
           </Tooltip>
         }
@@ -81,45 +97,34 @@ export default function AppLayout() {
             closable={false}
             styles={{ body: { padding: 0 } }}
           >
-            <SideNav collapsed={false} onNavigate={() => setDrawerOpen(false)} />
+            <SideNav
+              collapsed={false}
+              onNavigate={() => setDrawerOpen(false)}
+              onAbout={openAbout}
+              onPrivacy={openPrivacy}
+            />
           </Drawer>
         ) : (
-          <SideNav
-            collapsed={collapsed}
-            onToggleCollapsed={() => {
-              haptic("tap");
-              setCollapsed((c) => !c);
-            }}
-          />
+          <SideNav collapsed={collapsed} onAbout={openAbout} onPrivacy={openPrivacy} />
         )}
 
         <Layout className="dl-main">
           <Content className="dl-content">
-            {isMobile && (
-              <Button
-                type="text"
-                aria-label="Open navigation"
-                icon={<MenuOutlined />}
-                onClick={() => {
-                  haptic("tap");
-                  setDrawerOpen(true);
-                }}
-                className="dl-nav-trigger"
-              />
-            )}
             <Outlet />
           </Content>
 
-          <Footer className="dl-footer">
-            <div className="dl-footer-inner">
-              <DeeBuiltCredit />
-              <div className="dl-footer-links">
-                <Link onClick={() => setAboutOpen(true)}>About</Link>
-                <Text type="secondary">·</Text>
-                <Link onClick={() => setPrivacyOpen(true)}>Privacy</Link>
+          {isMobile && (
+            <Footer className="dl-footer">
+              <div className="dl-footer-inner">
+                <DeeBuiltCredit />
+                <div className="dl-footer-links">
+                  <Link onClick={openAbout}>About</Link>
+                  <Text type="secondary">·</Text>
+                  <Link onClick={openPrivacy}>Privacy</Link>
+                </div>
               </div>
-            </div>
-          </Footer>
+            </Footer>
+          )}
         </Layout>
       </Layout>
 

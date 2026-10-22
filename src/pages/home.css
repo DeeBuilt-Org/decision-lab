@@ -1,86 +1,19 @@
-/* Home. Goes straight to the scorecards — no marketing hero. */
+/* Home: the quiz library. */
 
-.dl-home {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ops-space-2xl);
-}
-
-.dl-home-section {
-  /* The section heads carry their own bottom rule from editor.css. */
-  min-width: 0;
-}
-
-.dl-home-start {
-  background: var(--ops-surface);
-  border: 1px solid var(--ops-border);
-  border-radius: var(--ops-radius-lg);
-  padding: var(--ops-card-pad);
-  max-width: 60ch;
-}
-
-.dl-home-start p {
-  margin: var(--ops-space-sm) 0 var(--ops-space-lg);
-  line-height: 1.55;
-}
-
-/* ---- Scorecard quick-run cards -------------------------------------------- */
-
-/* Two columns, not three. A three-up row is the single most recognizable
-   AI-generated layout tell, and two gives each name room to be read. */
-.dl-home-cards {
+/* Two equal columns that stretch to the same height, so quiz cards side by
+   side share a top and a bottom edge. One column on phones. */
+.dl-home-quizzes {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ops-space-md);
-}
-
-.dl-home-card {
-  display: flex;
-  align-items: center;
-  gap: var(--ops-space-md);
-  background: var(--ops-surface);
-  border: 1px solid var(--ops-border);
-  border-radius: var(--ops-radius);
-  padding: var(--ops-space-lg);
-  height: 100%;
-}
-
-.dl-home-card:hover {
-  border-color: var(--ops-header-accent);
-}
-
-.dl-home-card-body {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.dl-home-card-name {
-  font-size: var(--ops-fs-body);
-  font-weight: 650;
-  color: var(--ops-text);
-  letter-spacing: var(--ops-tracking-tight);
-}
-
-.dl-home-card-meta {
-  font-size: var(--ops-fs-caption);
-  color: var(--ops-text-muted);
+  gap: var(--ops-grid-gap);
+  align-items: stretch;
 }
 
 @media (max-width: 767px) {
-  .dl-home-cards {
+  .dl-home-quizzes {
     grid-template-columns: minmax(0, 1fr);
   }
 }

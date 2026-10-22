@@ -67,8 +67,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             // Raise AntD's base font on phones so EVERY control it renders
             // reads larger without hand-styling each one. Global type lever.
             fontSize: isMobile ? 16 : 14,
-            fontFamily:
-              "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            // The UI face lives in tokens.css; AntD writes this straight into
+            // its CSS, so the variable resolves like any other.
+            fontFamily: "var(--ops-font-ui)",
           },
           components: {
             // Horizontal padding only — heights stay on the theme's control
@@ -78,7 +79,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             Button: {
               paddingInlineLG: 10,
               paddingInline: 8,
-              fontWeight: 550,
+              // Lato ships 400 and 700 only; a 550 would round to 700 anyway.
+              fontWeight: 700,
               // AntD drops a shadow under PRIMARY buttons only, so a primary
               // sitting next to a default reads taller and slightly
               // misaligned even though both are the same height. Killing all

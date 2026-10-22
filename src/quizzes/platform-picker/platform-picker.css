@@ -24,9 +24,10 @@
    biggest type in the app. */
 .pp-title {
   margin: 0;
+  font-family: var(--ops-font-display);
   font-size: var(--ops-fs-verdict);
-  font-weight: 800;
-  letter-spacing: var(--ops-tracking-tight);
+  font-weight: var(--ops-fw-display);
+  letter-spacing: var(--ops-tracking-display);
   line-height: 1.05;
   color: var(--ops-text);
   max-width: 18ch;
@@ -106,9 +107,10 @@
 
 .pp-result-name {
   margin: 0;
+  font-family: var(--ops-font-display);
   font-size: var(--ops-fs-verdict);
-  font-weight: 800;
-  letter-spacing: var(--ops-tracking-tight);
+  font-weight: var(--ops-fw-display);
+  letter-spacing: var(--ops-tracking-display);
   line-height: 1.05;
   color: var(--ops-header-accent);
 }
@@ -134,7 +136,7 @@
 .pp-h3 {
   margin: 0;
   font-size: var(--ops-fs-caption);
-  font-weight: 700;
+  font-weight: var(--ops-fw-bold);
   letter-spacing: var(--ops-tracking-wide);
   text-transform: uppercase;
   color: var(--ops-text-muted);
@@ -153,7 +155,7 @@
   align-items: center;
   gap: var(--ops-space-xs);
   font-size: var(--ops-fs-body);
-  font-weight: 600;
+  font-weight: var(--ops-fw-bold);
   color: var(--ops-header-accent);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -189,7 +191,7 @@
 
 .pp-reason-detail {
   font-size: var(--ops-fs-criterion);
-  font-weight: 650;
+  font-weight: var(--ops-fw-bold);
   letter-spacing: var(--ops-tracking-tight);
   line-height: 1.3;
   color: var(--ops-text);
@@ -231,7 +233,7 @@
   flex: 0 0 auto;
   width: 1.5em;
   font-size: var(--ops-fs-caption);
-  font-weight: 700;
+  font-weight: var(--ops-fw-bold);
   color: var(--ops-text-muted);
   font-variant-numeric: tabular-nums;
 }
@@ -240,14 +242,16 @@
   flex: 1 1 auto;
   min-width: 0;
   font-size: var(--ops-fs-criterion);
-  font-weight: 700;
+  font-weight: var(--ops-fw-bold);
   letter-spacing: var(--ops-tracking-tight);
   color: var(--ops-text);
 }
 
 .pp-rank[data-top="true"] .pp-rank-name {
+  font-family: var(--ops-font-display);
   font-size: var(--ops-fs-h1);
-  font-weight: 800;
+  font-weight: var(--ops-fw-display);
+  letter-spacing: var(--ops-tracking-display);
   color: var(--ops-header-accent);
 }
 
@@ -279,7 +283,7 @@
 .pp-rank-gap {
   margin: 0;
   font-size: var(--ops-fs-caption);
-  font-weight: 600;
+  font-weight: var(--ops-fw-bold);
   color: var(--ops-fail-fg);
 }
 
@@ -287,12 +291,12 @@
 .pp-rank-meets {
   margin: 0;
   font-size: var(--ops-fs-body);
-  font-weight: 600;
+  font-weight: var(--ops-fw-bold);
   color: var(--ops-pass-fg);
 }
 
 .pp-rank-meets-label {
-  font-weight: 400;
+  font-weight: var(--ops-fw-regular);
   color: var(--ops-text-muted);
 }
 

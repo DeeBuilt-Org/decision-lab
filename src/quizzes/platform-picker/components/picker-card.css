@@ -47,9 +47,10 @@
    small, like a screenshot on the DeeBuilt site. */
 .pp-card-name {
   margin: 0;
+  font-family: var(--ops-font-display);
   font-size: var(--ops-fs-h1);
-  font-weight: 800;
-  letter-spacing: var(--ops-tracking-tight);
+  font-weight: var(--ops-fw-display);
+  letter-spacing: var(--ops-tracking-display);
   line-height: 1.1;
   color: var(--pp-ink-text);
 }
@@ -119,7 +120,7 @@
 
 .pp-tile-letter {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: var(--ops-fw-bold);
   letter-spacing: -0.04em;
   line-height: 1;
 }
@@ -183,7 +184,7 @@
 .pp-card-kicker {
   margin: 0;
   font-size: var(--ops-fs-fine);
-  font-weight: 600;
+  font-weight: var(--ops-fw-bold);
   letter-spacing: var(--ops-tracking-wide);
   text-transform: uppercase;
   color: var(--pp-ink-muted);
@@ -192,7 +193,7 @@
 .pp-card-question {
   margin: 0;
   font-size: var(--ops-fs-h2);
-  font-weight: 750;
+  font-weight: var(--ops-fw-bold);
   letter-spacing: var(--ops-tracking-tight);
   line-height: 1.2;
   color: var(--pp-ink-text);

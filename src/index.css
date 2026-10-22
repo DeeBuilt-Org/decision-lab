@@ -14,7 +14,7 @@ body,
 
 body {
   margin: 0;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--ops-font-ui);
   font-size: var(--ops-fs-body);
   color: var(--ops-text);
   background: var(--ops-surface-sunken);
@@ -28,9 +28,10 @@ body {
 /* Page title / heading rhythm. Type carries the design in this app, so the
    headings get real tracking rather than AntD's defaults. */
 .dl-h1 {
+  font-family: var(--ops-font-display);
   font-size: var(--ops-fs-h1);
-  font-weight: 800;
-  letter-spacing: var(--ops-tracking-tight);
+  font-weight: var(--ops-fw-display);
+  letter-spacing: var(--ops-tracking-display);
   line-height: 1.12;
   margin: 0;
   color: var(--ops-text);
@@ -38,7 +39,7 @@ body {
 
 .dl-h2 {
   font-size: var(--ops-fs-h2);
-  font-weight: 700;
+  font-weight: var(--ops-fw-bold);
   letter-spacing: var(--ops-tracking-tight);
   line-height: 1.2;
   margin: 0;
@@ -49,7 +50,7 @@ body {
    subtitle-under-headline, which is the generic-hero shape we avoid. */
 .dl-eyebrow {
   font-size: var(--ops-fs-fine);
-  font-weight: 600;
+  font-weight: var(--ops-fw-bold);
   letter-spacing: var(--ops-tracking-wide);
   text-transform: uppercase;
   color: var(--ops-text-muted);

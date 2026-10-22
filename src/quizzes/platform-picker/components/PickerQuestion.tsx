@@ -1,5 +1,5 @@
 import type { QuizQuestion } from "../questions";
-import "@/types/forms/components/run-row.css";
+import "../../question-row.css";
 
 /**
  * One Platform Picker question. Wears the questionnaire's run-row styles

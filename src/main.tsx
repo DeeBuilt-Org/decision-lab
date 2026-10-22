@@ -6,7 +6,7 @@ import "./index.css";
 // GitHub Pages SPA fallback (rafgraph pattern, paired with public/404.html):
 // the 404 page encodes the real path into the query string and bounces here;
 // decode it back into a real path BEFORE the router mounts, so a deep link or
-// a refresh on /scorecards/:id or /run/:id lands on the right route instead of
+// a refresh on /platform-picker lands on the right route instead of
 // silently dropping back to "/".
 (function decodeSpaRedirect(l: Location) {
   if (l.search[1] === "/") {

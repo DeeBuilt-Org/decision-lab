@@ -1,7 +1,7 @@
 {
   "name": "Decision Lab — DeeBuilt",
   "short_name": "Decisions",
-  "description": "Build a weighted scorecard once, then run it on every real decision — consistent verdicts, automatic dealbreakers, and a running list of what must be fixed first.",
+  "description": "Short quizzes that each answer one business question. The Platform Picker asks 20 questions and ranks seven work management platforms against your answers.",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
